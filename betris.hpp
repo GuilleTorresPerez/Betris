@@ -25,7 +25,7 @@ const int MAGENTA  = 45;
 const int CIAN     = 46;
 const int BLANCO   = 47;
 
-const int piezaAColor[5]={AZUL, VERDE, ROJO, CIAN, AMARILLO};
+const int piezaAColor[PIEZASDEF]={AZUL, VERDE, ROJO, CIAN, AMARILLO};
 
 // Tipo tablero
 struct tpTablero{
