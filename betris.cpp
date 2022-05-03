@@ -19,26 +19,7 @@ void mostrarCasilla(const int codigoDeColor) {
 void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
     for(int i = 0; tablero.nfils; i++) {
         for(int j = 0; tablero.ncols; j++) {
-            switch(tablero.matriz[i][j]) {
-                case -1:
-                    mostrarCasilla(NEGRO);
-                    break;
-                case 0:
-                    mostrarCasilla(AZUL);
-                    break;
-                case 1:
-                    mostrarCasilla(VERDE);
-                    break;
-                case 2:
-                    mostrarCasilla(ROJO);
-                    break;
-                case 3:
-                    mostrarCasilla(CIAN);
-                    break;
-                case 4:
-                    mostrarCasilla(AMARILLO);
-                    break;
-            }
+            mostrarCasilla(piezaAColor[tablero.matriz[i][j]]);
         }
     }
 }
