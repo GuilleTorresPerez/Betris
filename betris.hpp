@@ -85,6 +85,12 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]);
 //       si no devuelve -1
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo=0);
 
+// Pre: tp es un tablero con un determinado valor de piezas colocadas, pieza es la nueva pieza que se quiere colocar,
+//      posicion es un array con las coordenadas de la pieza que se quiere colocar, (arriba a la derecha)
+// Post: Devuelve true si el nuevo tablero no se solapa y false y hay dos o más piezas que se solapan en el nuevo tablero
+//       Actualiza tp con los nuevos valores de las piezas, incluso si se solapan
+bool insertarPieza(tpTablero &tp, tpPieza &pieza, const int posicion[]);
+
 //////////////////////////////////////////////////////////////////////////////
 // Salida con atributos
 //
@@ -122,4 +128,3 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
 // 45 magenta
 // 46 cian
 // 47 blanco
-
