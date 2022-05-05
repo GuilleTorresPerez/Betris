@@ -65,6 +65,13 @@ const tpPieza vPiezas[PIEZASDEF] = {
                                               //    XX
 };
 
+const int tamPiezas[PIEZASDEF][2] = {
+    {1, 4},
+    {4, 1},
+    {3, 2},
+    {2, 3},
+    {2, 2}
+};
 
 // FUNCIONES
 
@@ -83,7 +90,7 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]);
 //           devuelve el número de piezas colocadas, en vSalida las columnas en las que se han colocado
 //           las piezas y el tablero con las piezas colocadas
 //       si no devuelve -1
-int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo=0);
+int buscaSolucion(tpTablero &tablero, int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo=0);
 
 // Pre: tp es un tablero con un determinado valor de piezas colocadas, pieza es la nueva pieza que se quiere colocar,
 //      posicion es un array con las coordenadas de la pieza que se quiere colocar, (arriba a la derecha)
