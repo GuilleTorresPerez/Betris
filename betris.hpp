@@ -24,6 +24,7 @@ const int AZUL     = 44;
 const int MAGENTA  = 45;
 const int CIAN     = 46;
 const int BLANCO   = 47;
+const int VACIO    = -1;
 
 const int piezaAColor[PIEZASDEF]={AZUL, VERDE, ROJO, CIAN, AMARILLO};
 
@@ -90,13 +91,17 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]);
 //           devuelve el número de piezas colocadas, en vSalida las columnas en las que se han colocado
 //           las piezas y el tablero con las piezas colocadas
 //       si no devuelve -1
-int buscaSolucion(tpTablero &tablero, int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo=0);
+int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo=0);
 
 // Pre: tp es un tablero con un determinado valor de piezas colocadas, pieza es la nueva pieza que se quiere colocar,
 //      posicion es un array con las coordenadas de la pieza que se quiere colocar, (arriba a la derecha)
 // Post: Devuelve true si el nuevo tablero no se solapa y false y hay dos o más piezas que se solapan en el nuevo tablero
 //       Actualiza tp con los nuevos valores de las piezas, incluso si se solapan
 bool insertarPieza(tpTablero &tp, tpPieza &pieza, const int posicion[]);
+
+// Pre: tp es un tablero con un determinado valor de piezas colocadas, n es el número de filas necesarias para completar el objetivo
+// Post: devuelve true si el objetivo se ha cumplido, es decir que hay un n numero de filas relleno empezando desde abajo
+bool comprobarCondicion(const tpTablero &tp, const int n)
 
 //////////////////////////////////////////////////////////////////////////////
 // Salida con atributos

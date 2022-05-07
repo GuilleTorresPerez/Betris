@@ -1,7 +1,9 @@
 #include "betris.hpp"
 #include <iostream>
 #include <iomanip>
-using namespace std;
+#include <string>
+#include <time.h>
+#include <windows.h>
 
 void inicializarTablero(tpTablero &tablero) {
     for(int i = 0; i < tablero.nfils; i++) {
@@ -11,27 +13,21 @@ void inicializarTablero(tpTablero &tablero) {
     }
 }
 
-//Escribe en pantalla el color indicado
 void mostrarCasilla(const int codigoDeColor) {
-    cout << "\033[" << codigoDeColor << "m" << " " << "\033[0m";
+    cout << "\033[" << codigoDeColor << "m" << " " << "\033[0m"; 
 }
 
 void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
     for(int i = 0; tablero.nfils; i++) {
         for(int j = 0; tablero.ncols; j++) {
-            mostrarCasilla(piezaAColor[tablero.matriz[i][j]]);
+            mostrarCasilla(piezaAColor[vEntrada[tablero.matriz[i][j]]]);
         }
     }
 }
 
-//Se me ocurre dividir el árbol en etapas las cuales sean las piezas hasta llegar a la etapa final que sería la última pieza y que hasta la fila objetivo esté lleno.
-//Hasta que no se consiga colocar la pieza no se continua.
-//Y las soluciones van a ser las columnas donde se colocan las las figuras. (Vsalida, supongo)
-
-//La pieza solo puede ponerse sobre el suelo o sobre otra pieza y que no sobrepase la fila objetivo así que en verdad solo hay numColumnas posibles soluciones
-//Con que no se solape una pieza encima de otra o se salga del tablero todo ok
-
 /* 
+
+    HAY QUE REEMPLAZARLO CON EL BUENO PORQUE ESTE NO SIRVE PARA LO QUE SE PRETENDE HACER
 
     Algoritmo de Backtracking: 
     - Se coge una pieza de las disponibles en un array de entrada
@@ -51,96 +47,49 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
 
 */
 
-// TODO: Hay muchas partes de la función que las he dejado inacabadas, si crees que algo está mal es porque seguramente lo está
+int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo = 0) {
 
-int buscaSolucion(tpTablero &tablero, int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo = 0) {
+    tpTablero aux = tablero;                                                //Creación tablero auxiliar para casos no exitosos
+
+    int posicion[2];                                                        //
+
+    bool esValido = comprobarEspacio(aux, vEntrada[n], posicion);
+
+    insertarPieza(aux, vEntrada[n], n, posicion);
+
+    mostrarTablero(aux, vEntrada);
+
+    if (retardo == 0) {
+        string ignorar;
+        cin >> ignorar;
+    } else {
+        Sleep(retardo * 1000); // Encontrar funcion para hacer retardo
+    }
+
+    if (esValido) {
+        return buscaSolucion(aux, vEntrada, vSalida, objetivo, n + 1, retardo); // Backtracking
+    } else {
+        return n; // Objetivo encontrado
+    }
+}
+ 
+bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
     
-    for (int i = 0; i < tablero.ncols; i++) {
-        
-        vSalida[n] = i;
-
-        tpTablero aux = tablero;
-
-        // TODO: CALCULAR NUEVA POSICION PARA COLOCAR PIEZAS (SI CABEN EN EL TABLERO O SI HAY ALGUNA YA EN EL SUELO, ETC)
-
-        //const int posicion[2] = {0, 0};                 // Array auxiliar para que no de fallos el programa (hay que cambiarlo)
-
-
-        int height = 0;
-        int index = -1;
-        while(height != 0) {
-            height = aux.matriz[0][vSalida[n]]; // Check for empty bottom space
-        }
-
-        const int posicion[2] = {0, vSalida[n]};
-
-        bool esValido = false;      //Falta poner exactamente en que fila poner la pieza (Depende de si hay piezas debajo o de la propia altura de la pieza)
-
-        while(!esValido) {
-
-        }
-
-        //insertarPieza(aux, vPiezas[vEntrada[i]], posicion);
-        // TODO: ACTUALIZAR VENTRADA Y VSALIDA CON LOS NUEVOS DATOS
-
-        mostrarTablero(aux, vEntrada);              //Mostramos la pieza puesta en este caso
-
-        // Se produce retardo
-
-        if (esValido) {
-            vEntrada[n] = 
-            if (n < objetivo)  {
-                return buscaSolucion(aux, vEntrada, vSalida, objetivo, n + 1, retardo);
-            } else {
-                return n;
+    for(int i = 0; i < objetivo; i++) {
+        for(int j = 0; j < tp.ncols; j++) {
+            if (tp.matriz[i][j] == -1) {
+                return false;
             }
         }
-
-        
     }
 
-
-    
-
+    return true;
 
 }
-
-
-
-bool insertarPieza(tpTablero &tp, const tpPieza &pieza, const int posicion[]) {
-    
-    bool solapado = false; // Comprobar si se ha solapado alguna pieza
-
-    for (int i = 0; i < TAMPIEZA; i++) {
-        const int xPosicion = posicion[0] + pieza.forma[i][0]; // Se almacenan las posiciones de las piezas
-        const int yPosicion = posicion[1] + pieza.forma[i][1];
-
-        solapado = tp.matriz[xPosicion][yPosicion] == -1 ? solapado : true; // Si hay alguna pieza en dicha posicion hay solapacion
-
-        tp.matriz[xPosicion][yPosicion] = pieza.color; // Se cambia la cuadricula a la del color de dicha pieza
-    }
-    
-    return !solapado;
-}
-
-int main() {
-    tpTablero tablero;
-    int vEntrada[MAXENTRADA];
-
-    mostrarTablero(tablero, vEntrada);
-    
-    return 0;
-}
-
-
-// ESTOS ES CODIGO QUE NO CREO QUE LLEGUE A SER NECESARIO PERO NO LO BORRO POR SI ACASO
-
-
-/*
 
 bool comprobarEspacio(const tpTablero &tp, const int nPieza, int posicion[]) {
 
-    const int objetivoY = tp.nfils - tamPiezas[nPieza][0];
+    const int objetivoY = tp.nfils - tamPiezas[nPieza][0]; // TODO: REDEFINIR VECTOR CON TAMAÑO MINIMO
     const int objetivoX = tp.ncols - tamPiezas[nPieza][1];
 
     tpPieza pieza = vPiezas[nPieza];
@@ -163,46 +112,33 @@ bool comprobarEspacio(const tpTablero &tp, const int nPieza, int posicion[]) {
 
 bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posicion[]) {
 
-    bool hayEspacio = true;
-
     for (int i = 0; i < TAMPIEZA; i++) {
-        if (tp.matriz[pieza.forma[i][0] + posicion[0]][pieza.forma[i][1] + posicion[1]] != 0) {
-            hayEspacio = false;
+        if (tp.matriz[pieza.forma[i][0] + posicion[0]][pieza.forma[i][1] + posicion[1]] != VACIO) {
+            return false;
         }
     }
 
-    return hayEspacio;
+    return true;
 
 }
 
-if (esValido(tablero, vSalida[n])) {
-            if (n < objetivo)  {
-                return buscaSolucion(tablero, vEntrada, vSalida, objetivo, n + 1, retardo);
-            } else {
-                return n;
-            }
-        }
-        */
+void insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[]) {
+    
+    tpPieza pieza = vPiezas[nPieza];
 
-/*
-// Comprobar si el objetivo se ha cumplido
-    // ---------------------------------------
-    bool filasCompletadas = 0;
+    for (int i = 0; i < TAMPIEZA; i++) {
+        const int xPosicion = posicion[0] + pieza.forma[i][0]; // Se almacenan las posiciones de las piezas
+        const int yPosicion = posicion[1] + pieza.forma[i][1];
 
-    for (int i = 0; i < tablero.nfils; i++) {
-        
-        bool filaCompletada = true;
-        
-        for (int j = 0; j < tablero.ncols; j++) {
-            if (tablero.matriz[i][j] == -1) {
-                filaCompletada = false;
-            }
-        }
-
-        if (filaCompletada) {
-            filasCompletadas++;
-        }
+        tp.matriz[xPosicion][yPosicion] = index; // Se cambia la cuadricula a la del color de dicha pieza
     }
-    return filasCompletadas >= objetivo ? n : -1;
-    // ---------------------------------------
-*/
+}
+
+int main() {
+    tpTablero tablero;
+    int vEntrada[MAXENTRADA];
+
+    mostrarTablero(tablero, vEntrada);
+    
+    return 0;
+}
