@@ -49,29 +49,23 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
 */
 
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo = 0) {
+    
+    //Desde el main llamaremos a la función buscaSolución con n=0 (primera pieza) 
+    //El tema del aux no creo que solucione nada. sería o crear una función que la quite o crear varios aux 
+    int posicion[2];
+    int fila;
+    for (int i = 0; i < tablero.ncols; i++) {                               // Buscamos solución empezando desde la primera columna
 
-    tpTablero aux = tablero;                                                //Creación tablero auxiliar para casos no exitosos
-
-    int posicion[2];                                                        //
-
-    bool esValido = comprobarEspacio(aux, vEntrada[n], posicion);
-
-    insertarPieza(aux, vEntrada[n], n, posicion);
-
-    mostrarTablero(aux, vEntrada);
-
-    if (retardo == 0) {
-        string ignorar;
-        cin >> ignorar;
-    } else {
-        Sleep(retardo * 1000); 
-    }
-
-    if (esValido) {
-        return buscaSolucion(aux, vEntrada, vSalida, objetivo, n + 1, retardo); // Backtracking
-    } else {
-        return n; // Objetivo encontrado
-    }
+        if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
+            tpTablero aux = tablero;
+            insertarPieza(aux, vEntrada[n], n, posicion);
+            mostrarTablero(aux, vEntrada);                             //muestra el tablero 
+            if (comprobarCondicion) {
+                return n;
+            }
+            buscaSolucion(aux, vEntrada, vSalida, objetivo, n + 1, retardo);
+        }                   
+    }                                     
 }
  
 bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
@@ -94,26 +88,30 @@ bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
 
 }
 
-bool comprobarEspacio(const tpTablero &tp, const int nPieza, int posicion[]) {
+//ANTERIORMENTE ERA COMPROBAR ESPACIO
+bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int columna) {
 
     const int objetivoY = tp.nfils - tamPiezas[nPieza][0]; // TODO: REDEFINIR VECTOR CON TAMAÑO MINIMO
-    const int objetivoX = tp.ncols - tamPiezas[nPieza][1];
 
     tpPieza pieza = vPiezas[nPieza];
 
-    for (int i = 0; i < objetivoX; i++) {
-        for (int j = 0; j < objetivoY; j++) {
-            
-            posicion[0] = i;
-            posicion[1] = j;
+    for (int j = 0; j < objetivoY; j++) {
+        posicion[0] = columna;
+        posicion[1] = j;
 
-            if (comprobarPosicion(tp, pieza, posicion)) {
-                return true;
-            }
+        if (comprobarPosicion(tp, pieza, posicion)) {
+            return true;
         }
     }
+    
 
     return false; // Si no se ha encontrado espacio se devuelve falso
+
+}
+
+//De la forma en la que se me ocurre hacer el backtracking no creo que utilizar el aux sea una buena idea
+//entonces lo unico que se me ocurre es esto. También seria crear varios aux 
+void quitarPieza() {
 
 }
 
