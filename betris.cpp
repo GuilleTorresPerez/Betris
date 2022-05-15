@@ -22,6 +22,7 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
         for(int j = 0; tablero.ncols; j++) {
             mostrarCasilla(piezaAColor[vEntrada[tablero.matriz[i][j]]]);
         }
+        cout << endl;
     }
 }
 
@@ -63,7 +64,7 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
         string ignorar;
         cin >> ignorar;
     } else {
-        Sleep(retardo * 1000); // Encontrar funcion para hacer retardo
+        Sleep(retardo * 1000); 
     }
 
     if (esValido) {
@@ -75,15 +76,21 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
  
 bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
     
-    for(int i = 0; i < objetivo; i++) {
+    int nFilasRellenas = 0;
+
+    for(int i = 0; i < tp.nfils; i++) {
+        bool filaLlena = true;
         for(int j = 0; j < tp.ncols; j++) {
             if (tp.matriz[i][j] == -1) {
-                return false;
+                filaLlena =  false;
             }
+        }
+        if (filaLlena) {
+            nFilasRellenas++;
         }
     }
 
-    return true;
+    return nFilasRellenas >= objetivo;
 
 }
 
