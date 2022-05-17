@@ -1,6 +1,7 @@
 
 output: mainB.o betris.o 
 	g++ mainB.o betris.o -o output
+	
 
 mainB.o: mainB.cpp
 	g++ -c mainB.cpp

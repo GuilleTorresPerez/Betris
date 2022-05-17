@@ -48,7 +48,7 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
 
 */
 
-int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo = 0) {
+int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo) {
     
     //Desde el main llamaremos a la función buscaSolución con n=0 (primera pieza) 
     //El tema del aux no creo que solucione nada. sería o crear una función que la quite o crear varios aux 
@@ -57,14 +57,17 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
     for (int i = 0; i < tablero.ncols; i++) {                               // Buscamos solución empezando desde la primera columna
 
         if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
-            tpTablero aux = tablero;
+            
+            tpTablero aux = tablero;                                        // Solucion temporal, no es muy eficiente en memoria
             insertarPieza(aux, vEntrada[n], n, posicion);
-            mostrarTablero(aux, vEntrada);                             //muestra el tablero 
-            if (comprobarCondicion) {
+            mostrarTablero(aux, vEntrada);                             
+
+            if (comprobarCondicion(aux, objetivo)) {
                 return n;
             }
+            
             buscaSolucion(aux, vEntrada, vSalida, objetivo, n + 1, retardo);
-        }                   
+        }     
     }                                     
 }
  
@@ -95,9 +98,9 @@ bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int colum
 
     tpPieza pieza = vPiezas[nPieza];
 
-    for (int j = 0; j < objetivoY; j++) {
+    for (int i = 0; i < objetivoY; i++) {
         posicion[0] = columna;
-        posicion[1] = j;
+        posicion[1] = i;
 
         if (comprobarPosicion(tp, pieza, posicion)) {
             return true;
@@ -127,7 +130,7 @@ bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posi
 
 }
 
-void insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[]) {
+bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[]) {
     
     tpPieza pieza = vPiezas[nPieza];
 

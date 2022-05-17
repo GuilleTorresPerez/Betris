@@ -1,7 +1,11 @@
+#include "betris.hpp"
+#include <iostream>
+
+using namespace std;
 
 int main() {
 
-    // Función main del programa
+    cout << "holo";
 
     return 0;
 }
