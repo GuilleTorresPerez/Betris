@@ -5,6 +5,8 @@
 #include <time.h>
 #include <windows.h>
 
+using namespace std;
+
 void inicializarTablero(tpTablero &tablero) {
     for(int i = 0; i < tablero.nfils; i++) {
         for(int j = 0; j < tablero.ncols; j++) {
@@ -24,6 +26,31 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
         }
         cout << endl;
     }
+}
+
+void comprobarEntrada(int vEntrada[], const int n) {
+    while(vEntrada[0] < 0) {
+        for (int i = 0; i < n-1; i++) {
+            vEntrada[i] = vEntrada[i+1];
+        }
+    }
+}
+
+void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo) {
+
+    cout << "Escribe los parámetros de entrada: " << endl;
+    cin >> x >> y >> objetivo >> retardo;
+
+    int n = 0;
+
+    while(vEntrada[n] != -1) {
+        cin >> vEntrada[n];
+        n++;
+    }
+
+    comprobarEntrada(vEntrada, n);
+
+
 }
 
 /* 

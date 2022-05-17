@@ -103,11 +103,14 @@ bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int p
 // Post: devuelve true si el objetivo se ha cumplido, es decir que hay un n numero de filas relleno empezando desde abajo
 bool comprobarCondicion(const tpTablero &tp, const int n);
 
-// TODO: ESPECIFICAR CONDICION
+// TODO: ESPECIFICAR CONDICION Y SALIDA
 bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posicion[]);
 
-// TODO: ESPECIFICAR CONDICION
+// TODO: ESPECIFICAR CONDICION Y SALIDA
 bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int columna);
+
+// TODO: ESPECIFICAR CONDICION Y SALIDA
+void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo);
 
 //////////////////////////////////////////////////////////////////////////////
 // Salida con atributos
