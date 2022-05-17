@@ -138,12 +138,3 @@ void insertarPieza(tpTablero &tp, const int nPieza, const int index, const int p
         tp.matriz[xPosicion][yPosicion] = index; // Se cambia la cuadricula a la del color de dicha pieza
     }
 }
-
-int main() {
-    tpTablero tablero;
-    int vEntrada[MAXENTRADA];
-
-    mostrarTablero(tablero, vEntrada);
-    
-    return 0;
-}
