@@ -20,8 +20,8 @@ void mostrarCasilla(const int codigoDeColor) {
 }
 
 void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
-    for(int i = 0; tablero.nfils; i++) {
-        for(int j = 0; tablero.ncols; j++) {
+    for(int i = 0; i < tablero.nfils; i++) {
+        for(int j = 0; j  < tablero.ncols; j++) {
             mostrarCasilla(piezaAColor[vEntrada[tablero.matriz[i][j]]]);
         }
         cout << endl;
@@ -38,18 +38,17 @@ void comprobarEntrada(int vEntrada[], const int n) {
 
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo) {
 
-    cout << "Escribe los parámetros de entrada: " << endl;
-    cin >> x >> y >> objetivo >> retardo;
+    cout << "Escribe los parametros de entrada (dimension x, dimension y, objetivo, retardo, piezas): " << endl;
+    cin >> x >> y >> objetivo >> retardo >> vEntrada[0];
 
-    int n = 0;
+    int n = 1;
 
     while(vEntrada[n] != -1) {
-        cin >> vEntrada[n];
         n++;
+        cin >> vEntrada[n];
     }
 
     comprobarEntrada(vEntrada, n);
-
 
 }
 
@@ -79,9 +78,18 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
     
     //Desde el main llamaremos a la función buscaSolución con n=0 (primera pieza) 
     //El tema del aux no creo que solucione nada. sería o crear una función que la quite o crear varios aux 
+    
+    if (vEntrada[n] == -1) {
+        cout << "No se ha podido encontrar una solución al problema" << endl;   // #
+        return -1;
+    }
+    
     int posicion[2];
     int fila;
+
     for (int i = 0; i < tablero.ncols; i++) {                               // Buscamos solución empezando desde la primera columna
+
+        cout << "Pieza numero " << n << " y columna numero " << i << endl;     // #
 
         if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
             
@@ -90,12 +98,19 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
             mostrarTablero(aux, vEntrada);                             
 
             if (comprobarCondicion(aux, objetivo)) {
+                cout << "Se ha encontrado solucion al problema en la columna " << n << endl; // #
                 return n;
             }
             
             buscaSolucion(aux, vEntrada, vSalida, objetivo, n + 1, retardo);
-        }     
-    }                                     
+        }   
+    }             
+
+    mostrarTablero(tablero, vEntrada); 
+
+    cout << "No se ha podido colocar la pieza numero " << n << endl;        // #
+    return -1;
+
 }
  
 bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
@@ -121,11 +136,11 @@ bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
 //ANTERIORMENTE ERA COMPROBAR ESPACIO
 bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int columna) {
 
-    const int objetivoY = tp.nfils - tamPiezas[nPieza][0]; // TODO: REDEFINIR VECTOR CON TAMAÑO MINIMO
+    //const int objetivoY = tp.nfils - tamPiezas[nPieza][0];
 
     tpPieza pieza = vPiezas[nPieza];
 
-    for (int i = 0; i < objetivoY; i++) {
+    for (int i = 0; i < tp.nfils; i++) { // TODO: OPTIMIZAR BUSQUEDA
         posicion[0] = columna;
         posicion[1] = i;
 
@@ -146,6 +161,8 @@ void quitarPieza() {
 }
 
 bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posicion[]) {
+
+    
 
     for (int i = 0; i < TAMPIEZA; i++) {
         if (tp.matriz[pieza.forma[i][0] + posicion[0]][pieza.forma[i][1] + posicion[1]] != VACIO) {
