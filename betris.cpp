@@ -86,43 +86,37 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
         return -1;
     }
     
-    bool estaTerminado = comprobarCondicion(tablero, objetivo);
-
-    if (estaTerminado) {
-        return n;
+    if (comprobarCondicion(tablero, objetivo)) {
+        return n + 1;
     }
 
     //while
     int i = 0;  
-    while (estaTerminado == false && i < tablero.ncols) {                                               // Buscamos solución empezando desde la primera columna
+    while (i < tablero.ncols) {                                               // Buscamos solución empezando desde la primera columna
 
         cout << "Pieza numero " << n << " y columna numero " << i << endl;     // #
 
         int posicion[2];
         if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
-            
-            tpTablero aux = tablero;                                        // Solucion temporal, no es muy eficiente en memoria
-            int vSalAux[MAXENTRADA];
-            for(int j = 0; j < n; j++) {
-                vSalAux[j] = vSalida[j];
-            }
-            vSalAux[n] = i;
 
-            insertarPieza(aux, vEntrada[n], n, posicion);
-            mostrarTablero(aux, vEntrada);                             
+            insertarPieza(tablero, vEntrada[n], n, posicion, vSalida, true);
+            vSalida[n] == i;
+            mostrarTablero(tablero, vEntrada);                             
 
             cout << "Se ha colocado la pieza " << n << endl;
-
-            if (comprobarCondicion(aux, objetivo)) {
-                for(int j = 0; j < n; j++) {
-                    vSalida[j] = vSalAux[j];
-                }
-                cout << "Se ha encontrado solucion al problema en la columna " << n << endl; // #
-                return n + 1;   // n empieza en 0, por lo tanto para convertirlo a numero natural hay que sumarle 1
-            }
             
-            return buscaSolucion(aux, vEntrada, vSalAux, objetivo, n + 1, retardo);
-        }   
+            int backTracking =  buscaSolucion(tablero, vEntrada, vSalida, objetivo, n + 1, retardo);
+        
+            if (backTracking > 0) {
+                return backTracking;
+            } else {
+                insertarPieza(tablero, vEntrada[n], n, posicion, vSalida, false);
+            }
+
+        }
+
+        i++;
+
     }
 }
  
@@ -178,7 +172,7 @@ bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posi
 
 }
 
-bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[]) {
+bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[], int vSalida[], const bool insertar) {
     
     tpPieza pieza = vPiezas[nPieza];
 
@@ -186,6 +180,19 @@ bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int p
         const int yPosicion = posicion[0] + pieza.forma[i][0]; // Se almacenan las posiciones de las piezas
         const int xPosicion = posicion[1] + pieza.forma[i][1];
 
-        tp.matriz[yPosicion][xPosicion] = index; // Se cambia la cuadricula a la del color de dicha pieza
+        if (insertar) {
+            tp.matriz[yPosicion][xPosicion] = index; // Se cambia la cuadricula a la del color de dicha pieza
+        } else {
+            tp.matriz[yPosicion][xPosicion] = -1; // Se cambia la cuadricula a -1
+        }
     }
+
+    if (insertar) {
+        vSalida[index] = posicion[1];
+    } else {
+        vSalida[index] = -1;
+    }
+
+    
+
 }

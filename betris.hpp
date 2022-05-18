@@ -97,7 +97,7 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
 //      posicion es un array con las coordenadas de la pieza que se quiere colocar, (arriba a la derecha)
 // Post: Devuelve true si el nuevo tablero no se solapa y false y hay dos o más piezas que se solapan en el nuevo tablero
 //       Actualiza tp con los nuevos valores de las piezas, incluso si se solapan
-bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[]);
+bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[], int vSalida[], const bool insertar);
 
 // Pre: tp es un tablero con un determinado valor de piezas colocadas, n es el número de filas necesarias para completar el objetivo
 // Post: devuelve true si el objetivo se ha cumplido, es decir que hay un n numero de filas relleno empezando desde abajo

@@ -9,7 +9,7 @@ void datosFinales(const int vEntrada[], const int vSalida[], const int n) {
         cout << vEntrada[index] << " ";
         index++;
     } 
-    cout << endl << "Numero de piezas colocadas: " << n << endl << "Salida (numeros de columnas): " << endl;
+    cout << endl << "Numero de piezas colocadas: " << n << endl << "Salida (numeros de columnas): ";
     for (int i = 0; i < n; i ++) {
         cout << vSalida[i] << " ";
     }
@@ -23,8 +23,9 @@ void datosFinales(const int vEntrada[], const int vSalida[], const int n) {
 //El segundo argumento, argv (argument vector), es una referencia a un vector de cadenas de caracteres. 
 //En cada posici´on de este vector se almacena cada una de las cadenas
 //dadas por la l´ınea de ´ordenes
-int main(int argc, char* argv[]) {
+int main(/*int argc, char* argv[]*/) {
 
+    /*
     int vSalida[MAXENTRADA];
     int vEntrada[MAXENTRADA];
     tpTablero tablero;
@@ -35,8 +36,18 @@ int main(int argc, char* argv[]) {
     int retardo = int(argv[3]);
     for (int i = 4; i < argc; i++) {
         vEntrada[i - 4] = int(argv[i]);
-    }
+    }*/
 
+
+    int vEntrada[MAXENTRADA] = {0, 0, 4, 2, 3, 2, 1, -1};
+    int vSalida[MAXENTRADA];
+    int x = 5, y = 6;
+    int retardo = 0, objetivo = 4;
+
+    tpTablero tablero;
+
+    tablero.ncols = x;
+    tablero.nfils = y;
 
     inicializarTablero(tablero);
 
