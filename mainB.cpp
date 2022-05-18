@@ -17,10 +17,10 @@ void datosFinales(const int vEntrada[], const int vSalida[], const int n) {
 
 int main() {
 
-    int vEntrada[MAXENTRADA] = {0, 0, 0, 0 -1};
+    int vEntrada[MAXENTRADA] = {0, 0, 4, 2, 3, 2, 1, -1};
     int vSalida[MAXENTRADA];
-    int x= 4, y=4;
-    int retardo=0, objetivo=4;
+    int x = 5, y = 6;
+    int retardo = 0, objetivo = 4;
 
     tpTablero tablero;
 

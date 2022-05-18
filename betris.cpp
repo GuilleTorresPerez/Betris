@@ -10,7 +10,7 @@ using namespace std;
 void inicializarTablero(tpTablero &tablero) {
     for(int i = 0; i < tablero.nfils; i++) {
         for(int j = 0; j < tablero.ncols; j++) {
-            tablero.matriz[i][j] = -1;
+            tablero.matriz[i][j] = -1;              // Se inicializan todas las casillas a -1
         }
     }
 }
@@ -19,21 +19,26 @@ void mostrarCasilla(const int codigoDeColor) {
     cout << "\033[" << codigoDeColor << "m" << " " << "\033[0m"; 
 }
 
-void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]) {
-    for(int i = 0; i < tablero.nfils; i++) {
+void mostrarTablero(const tpTablero &tablero, const int vEntrada[MAXENTRADA]) {
+    for (int i = 0; i < tablero.ncols; i++) {
+        cout << "-";
+    }
+    cout << endl;
+    for(int i = 0; i < tablero.nfils; i++) {                     // Se invierte el tablero para empezar desde abajo
         for(int j = 0; j  < tablero.ncols; j++) {
-            mostrarCasilla(piezaAColor[vEntrada[tablero.matriz[i][j]]]);
+            int indexCasilla = tablero.matriz[i][j];
+            if (indexCasilla != -1) {
+                mostrarCasilla(piezaAColor[vEntrada[indexCasilla]]);
+            } else {
+                mostrarCasilla(0);
+            }
         }
         cout << endl;
     }
-}
-
-void comprobarEntrada(int vEntrada[], const int n) {
-    while(vEntrada[0] < 0) {
-        for (int i = 0; i < n-1; i++) {
-            vEntrada[i] = vEntrada[i+1];
-        }
+    for (int i = 0; i < tablero.ncols; i++) {
+        cout << "-";
     }
+    cout << endl;
 }
 
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo) {
@@ -43,74 +48,54 @@ void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objet
 
     int n = 1;
 
-    while(vEntrada[n] != -1) {
-        n++;
-        cin >> vEntrada[n];
+    if (vEntrada[0] < 0) {
+        // Funcion aleatoria de entrada con -vEntrada[0] numeros
+    } else {
+        while(vEntrada[n] != -1) {
+            n++;
+            cin >> vEntrada[n];
+        }
     }
-
-    comprobarEntrada(vEntrada, n);
 
 }
 
-/* 
-
-    HAY QUE REEMPLAZARLO CON EL BUENO PORQUE ESTE NO SIRVE PARA LO QUE SE PRETENDE HACER
-
-    Algoritmo de Backtracking: 
-    - Se coge una pieza de las disponibles en un array de entrada
-    - Se comprueba si esa pieza cabe en el tablero, en alguna parte
-    - Se elimina la pieza del array de entrada
-        - Si la pieza no cabe
-            - Si se ha comprobado con todas las piezas, o ninguna de las dichas cabe más, se devuelve false y no se prueba más con esa rama
-            - Si no se sigue comprobando el resto de las piezas
-        - Si la pieza cabe en alguna parte
-            - Se actualiza vSalida con la nueva pieza, así como vEntrada
-            - Se comprueba si se ha cumplido el objetivo
-                - Si se ha cumplido el objetivo se para de buscar y finaliza el programa
-                - Si no se ha cumplido el objetivo se sigue buscando con el algoritmo de backtracking, habiendo eliminado la pieza que se ha colocado
-
-    Hay que retirar las piezas usadas de alguna lista, entonces da igual hacer un for con columnas que con piezas, aunque me parece
-    más intuitivo con piezas, esto ya lo haces tu como veas
-
-*/
-
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo) {
-    
-    //Desde el main llamaremos a la función buscaSolución con n=0 (primera pieza) 
-    //El tema del aux no creo que solucione nada. sería o crear una función que la quite o crear varios aux 
     
     if (vEntrada[n] == -1) {
         cout << "No se ha podido encontrar una solución al problema" << endl;   // #
         return -1;
     }
     
-    int posicion[2];
-    int fila;
-
     for (int i = 0; i < tablero.ncols; i++) {                               // Buscamos solución empezando desde la primera columna
 
         cout << "Pieza numero " << n << " y columna numero " << i << endl;     // #
 
+        int posicion[2];
         if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
             
             tpTablero aux = tablero;                                        // Solucion temporal, no es muy eficiente en memoria
+            int vSalAux[MAXENTRADA];
+            for(int j = 0; j < n; j++) {
+                vSalAux[j] = vSalida[j];
+            }
+            vSalAux[n] = i;
+
             insertarPieza(aux, vEntrada[n], n, posicion);
             mostrarTablero(aux, vEntrada);                             
 
+            cout << "Se ha colocado la pieza " << n << endl;
+
             if (comprobarCondicion(aux, objetivo)) {
+                for(int j = 0; j < n; j++) {
+                    vSalida[j] = vSalAux[j];
+                }
                 cout << "Se ha encontrado solucion al problema en la columna " << n << endl; // #
-                return n;
+                return n + 1;   // n empieza en 0, por lo tanto para convertirlo a numero natural hay que sumarle 1
             }
             
-            buscaSolucion(aux, vEntrada, vSalida, objetivo, n + 1, retardo);
+            return buscaSolucion(aux, vEntrada, vSalAux, objetivo, n + 1, retardo);
         }   
-    }             
-
-    mostrarTablero(tablero, vEntrada); 
-
-    cout << "No se ha podido colocar la pieza numero " << n << endl;        // #
-    return -1;
-
+    }
 }
  
 bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
@@ -133,36 +118,27 @@ bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
 
 }
 
-//ANTERIORMENTE ERA COMPROBAR ESPACIO
 bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int columna) {
 
-    //const int objetivoY = tp.nfils - tamPiezas[nPieza][0];
+    const int objetivoY = tp.nfils - tamPiezas[nPieza][0] + 1;
 
     tpPieza pieza = vPiezas[nPieza];
 
-    for (int i = 0; i < tp.nfils; i++) { // TODO: OPTIMIZAR BUSQUEDA
-        posicion[0] = columna;
-        posicion[1] = i;
+    for (int i = tp.nfils-1; i >= 0; i--) { 
+        
+        posicion[0] = i;
+        posicion[1] = columna;
 
         if (comprobarPosicion(tp, pieza, posicion)) {
             return true;
         }
     }
     
-
     return false; // Si no se ha encontrado espacio se devuelve falso
 
 }
 
-//De la forma en la que se me ocurre hacer el backtracking no creo que utilizar el aux sea una buena idea
-//entonces lo unico que se me ocurre es esto. También seria crear varios aux 
-void quitarPieza() {
-
-}
-
 bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posicion[]) {
-
-    
 
     for (int i = 0; i < TAMPIEZA; i++) {
         if (tp.matriz[pieza.forma[i][0] + posicion[0]][pieza.forma[i][1] + posicion[1]] != VACIO) {
@@ -179,9 +155,9 @@ bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int p
     tpPieza pieza = vPiezas[nPieza];
 
     for (int i = 0; i < TAMPIEZA; i++) {
-        const int xPosicion = posicion[0] + pieza.forma[i][0]; // Se almacenan las posiciones de las piezas
-        const int yPosicion = posicion[1] + pieza.forma[i][1];
+        const int yPosicion = posicion[0] + pieza.forma[i][0]; // Se almacenan las posiciones de las piezas
+        const int xPosicion = posicion[1] + pieza.forma[i][1];
 
-        tp.matriz[xPosicion][yPosicion] = index; // Se cambia la cuadricula a la del color de dicha pieza
+        tp.matriz[yPosicion][xPosicion] = index; // Se cambia la cuadricula a la del color de dicha pieza
     }
 }
