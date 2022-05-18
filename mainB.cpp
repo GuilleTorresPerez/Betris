@@ -15,17 +15,28 @@ void datosFinales(const int vEntrada[], const int vSalida[], const int n) {
     }
 }
 
-int main() {
 
-    int vEntrada[MAXENTRADA] = {0, 0, 4, 2, 3, 2, 1, -1};
+//el argumento argc (argument counter) de la funci´on main toma como valor el n´umero
+//de cadenas (o secuencias de caracteres) dados por la l´ınea de ´ordenes y separadas por
+//espacios (por defecto), incluyendo tambi´en la cadena relativa al nombre del programa
+
+//El segundo argumento, argv (argument vector), es una referencia a un vector de cadenas de caracteres. 
+//En cada posici´on de este vector se almacena cada una de las cadenas
+//dadas por la l´ınea de ´ordenes
+int main(int argc, char* argv[]) {
+
     int vSalida[MAXENTRADA];
-    int x = 5, y = 6;
-    int retardo = 0, objetivo = 4;
-
+    int vEntrada[MAXENTRADA];
     tpTablero tablero;
 
-    tablero.ncols = x;
-    tablero.nfils = y;
+    tablero.nfils = int(argv[0]);
+    tablero.ncols = int(argv[1]);
+    int objetivo = int(argv[2]);
+    int retardo = int(argv[3]);
+    for (int i = 4; i < argc; i++) {
+        vEntrada[i - 4] = int(argv[i]);
+    }
+
 
     inicializarTablero(tablero);
 

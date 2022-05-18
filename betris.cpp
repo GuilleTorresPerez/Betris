@@ -15,6 +15,26 @@ void inicializarTablero(tpTablero &tablero) {
     }
 }
 
+/*
+ * Pre:  ---
+ * Post: Borra la parte visible del terminal y mueve el cursor a la primera
+ *       fila y la primera columna, de forma que la siguiente instrucción de 
+ *       escritura en pantalla escriba desde el inicio de la parte visible del
+ *       terminal.
+ */
+void borrarPantalla() {
+    cout << "\033[2J";
+}
+
+/*
+ * Pre:  ---
+ * Post: Sube el cursor de escritura del terminal «lineas» líneas, sin borrar
+ *       el contenido que ya esté escrito en el terminal.
+ */
+void subirCursor(const unsigned lineas) {
+    cout << "\033[" << lineas << "A";
+}
+
 void mostrarCasilla(const int codigoDeColor) {
     cout << "\033[" << codigoDeColor << "m" << " " << "\033[0m"; 
 }
@@ -60,13 +80,21 @@ void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objet
 }
 
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo) {
-    
+
     if (vEntrada[n] == -1) {
         cout << "No se ha podido encontrar una solución al problema" << endl;   // #
         return -1;
     }
     
-    for (int i = 0; i < tablero.ncols; i++) {                               // Buscamos solución empezando desde la primera columna
+    bool estaTerminado = comprobarCondicion(tablero, objetivo);
+
+    if (estaTerminado) {
+        return n;
+    }
+
+    //while
+    int i = 0;  
+    while (estaTerminado == false && i < tablero.ncols) {                                               // Buscamos solución empezando desde la primera columna
 
         cout << "Pieza numero " << n << " y columna numero " << i << endl;     // #
 
