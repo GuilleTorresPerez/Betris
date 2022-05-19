@@ -82,35 +82,30 @@ void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objet
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo) {
 
     if (vEntrada[n] == -1) {
-        cout << "No se ha podido encontrar una solución al problema" << endl;   // #
         return -1;
     }
     
     if (comprobarCondicion(tablero, objetivo)) {
-        return n + 1;
+        return n;
     }
 
-    //while
-    int i = 0;  
-    while (i < tablero.ncols) {                                               // Buscamos solución empezando desde la primera columna
-
-        cout << "Pieza numero " << n << " y columna numero " << i << endl;     // #
+    int i = 0; 
+    bool esSolucion = false;
+    int backTracking = -1; 
+    while (i < tablero.ncols && !esSolucion) {                                               // Buscamos solución empezando desde la primera columna
 
         int posicion[2];
         if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
 
             insertarPieza(tablero, vEntrada[n], n, posicion, vSalida, true);
-            vSalida[n] == i;
             mostrarTablero(tablero, vEntrada);                             
 
-            cout << "Se ha colocado la pieza " << n << endl;
-            
             int backTracking =  buscaSolucion(tablero, vEntrada, vSalida, objetivo, n + 1, retardo);
         
-            if (backTracking > 0) {
-                return backTracking;
-            } else {
+            if (backTracking == -1) {
                 insertarPieza(tablero, vEntrada[n], n, posicion, vSalida, false);
+            } else {
+                return backTracking;
             }
 
         }
@@ -118,6 +113,9 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
         i++;
 
     }
+
+    return backTracking;
+
 }
  
 bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
@@ -163,9 +161,16 @@ bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int colum
 bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posicion[]) {
 
     for (int i = 0; i < TAMPIEZA; i++) {
-        if (tp.matriz[pieza.forma[i][0] + posicion[0]][pieza.forma[i][1] + posicion[1]] != VACIO) {
-            return false;
+        
+        int posY = pieza.forma[i][0] + posicion[0];
+        int posX = pieza.forma[i][1] + posicion[1];
+        
+        for (int j = posY; j >= 0; j--) {
+            if (tp.matriz[j][posX] != VACIO) {
+                return false;
+            }
         }
+
     }
 
     return true;
