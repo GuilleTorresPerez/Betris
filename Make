@@ -1,0 +1,28 @@
+#------------------------------------------------------------------------------
+# File:   Makefile
+# Author: Programación II-Unizar
+# Date:   mayo 2022
+# Coms:   Makefile práctica final Betris de Programación II
+#------------------------------------------------------------------------------
+
+#---------------------------------------------------------
+# Definición de macros
+CC = g++
+CPPFLAGS = -I. -std=c++11      #opciones de compilación
+LDFLAGS =                      #opciones de linkado
+RM = rm -f                     #comando para borrar ficheros
+
+all: Betris
+#-----------------------------------------------------------
+# Compilacion
+mainB.o: mainB.cpp
+	${CC} -c mainB.cpp ${CPPFLAGS}
+# Linkado
+Betris: betris.o mainB.o
+	${CC} betris.o mainB.o -o Betris ${LDFLAGS}
+betris.o: betris.cpp betris.hpp
+	${CC} -c betris.cpp ${CPPFLAGS}
+#-----------------------------------------------------------	
+# LIMPIEZA de todo lo generado. Ojo: se borrarán sin preguntar
+clean:
+	${RM} betris.o mainB.o Betris

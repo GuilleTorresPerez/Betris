@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <string>
 #include <time.h>
-#include <windows.h>
+//#include <windows.h>
 
 using namespace std;
 

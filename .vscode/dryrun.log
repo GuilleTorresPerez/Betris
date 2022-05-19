@@ -1,0 +1,8 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/guille/Documents/Universidad/2CUATRI/programacion2/practicaFinal/Betris'
+ 
+g++ -c mainB.cpp
+g++ -c betris.cpp
+g++ mainB.o betris.o -o output
+make: Leaving directory '/home/guille/Documents/Universidad/2CUATRI/programacion2/practicaFinal/Betris'
+ 
