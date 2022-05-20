@@ -2,8 +2,12 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <time.h>
-//#include <windows.h>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 
 using namespace std;
 
@@ -40,10 +44,7 @@ void mostrarCasilla(const int codigoDeColor) {
 }
 
 void mostrarTablero(const tpTablero &tablero, const int vEntrada[MAXENTRADA]) {
-    for (int i = 0; i < tablero.ncols; i++) {
-        cout << "-";
-    }
-    cout << endl;
+    subirCursor(tablero.nfils);
     for(int i = 0; i < tablero.nfils; i++) {                     // Se invierte el tablero para empezar desde abajo
         for(int j = 0; j  < tablero.ncols; j++) {
             int indexCasilla = tablero.matriz[i][j];
@@ -55,10 +56,7 @@ void mostrarTablero(const tpTablero &tablero, const int vEntrada[MAXENTRADA]) {
         }
         cout << endl;
     }
-    for (int i = 0; i < tablero.ncols; i++) {
-        cout << "-";
-    }
-    cout << endl;
+    usleep(TIEMPO);
 }
 
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo) {
@@ -194,10 +192,9 @@ bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int p
 
     if (insertar) {
         vSalida[index] = posicion[1];
+        return true;
     } else {
         vSalida[index] = -1;
+        return false;
     }
-
-    
-
 }

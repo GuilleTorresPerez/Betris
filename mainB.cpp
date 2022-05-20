@@ -25,6 +25,8 @@ void datosFinales(const int vEntrada[], const int vSalida[], const int n) {
 //dadas por la l´ınea de ´ordenes
 int main(/*int argc, char* argv[]*/) {
 
+    borrarPantalla();
+
     /*
     int vSalida[MAXENTRADA];
     int vEntrada[MAXENTRADA];

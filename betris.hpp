@@ -28,6 +28,8 @@ const int VACIO    = -1;
 
 const int piezaAColor[PIEZASDEF]={AZUL, VERDE, ROJO, CIAN, AMARILLO};
 
+const int TIEMPO   = 250000;
+
 // Tipo tablero
 struct tpTablero{
     int nfils; // Número de filas del tablero
@@ -111,6 +113,16 @@ bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int colum
 
 // TODO: ESPECIFICAR CONDICION Y SALIDA
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo);
+
+/*
+ * Pre:  ---
+ * Post: Borra la parte visible del terminal y mueve el cursor a la primera
+ *       fila y la primera columna, de forma que la siguiente instrucción de 
+ *       escritura en pantalla escriba desde el inicio de la parte visible del
+ *       terminal.
+ */
+void borrarPantalla();
+
 
 //////////////////////////////////////////////////////////////////////////////
 // Salida con atributos
