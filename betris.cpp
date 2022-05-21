@@ -59,22 +59,15 @@ void mostrarTablero(const tpTablero &tablero, const int vEntrada[MAXENTRADA]) {
     usleep(TIEMPO);
 }
 
-void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo) {
-
-    cout << "Escribe los parametros de entrada (dimension x, dimension y, objetivo, retardo, piezas): " << endl;
-    cin >> x >> y >> objetivo >> retardo >> vEntrada[0];
-
-    int n = 1;
-
-    if (vEntrada[0] < 0) {
-        // Funcion aleatoria de entrada con -vEntrada[0] numeros
-    } else {
-        while(vEntrada[n] != -1) {
-            n++;
-            cin >> vEntrada[n];
-        }
+void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo,const int argc,char* argv[]) {
+    y = stoi(argv[1]);
+    x = stoi(argv[2]);
+    objetivo = stoi(argv[3]);
+    retardo = stoi(argv[4]);
+    
+    for (int i = 5; i < argc; i++) {
+        vEntrada[i - 5] = stoi(argv[i]);
     }
-
 }
 
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo) {

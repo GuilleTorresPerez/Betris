@@ -112,7 +112,7 @@ bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posi
 bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int columna);
 
 // TODO: ESPECIFICAR CONDICION Y SALIDA
-void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo);
+void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo, int argc, char* argv[]);
 
 /*
  * Pre:  ---

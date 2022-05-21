@@ -23,37 +23,19 @@ void datosFinales(const int vEntrada[], const int vSalida[], const int n) {
 //El segundo argumento, argv (argument vector), es una referencia a un vector de cadenas de caracteres. 
 //En cada posici´on de este vector se almacena cada una de las cadenas
 //dadas por la l´ınea de ´ordenes
-int main(/*int argc, char* argv[]*/) {
+int main(int argc, char* argv[]) {
 
     borrarPantalla();
 
-    /*
     int vSalida[MAXENTRADA];
     int vEntrada[MAXENTRADA];
     tpTablero tablero;
-
-    tablero.nfils = int(argv[0]);
-    tablero.ncols = int(argv[1]);
-    int objetivo = int(argv[2]);
-    int retardo = int(argv[3]);
-    for (int i = 4; i < argc; i++) {
-        vEntrada[i - 4] = int(argv[i]);
-    }*/
-
-
-    int vEntrada[MAXENTRADA] = {0, 0, 4, 2, 3, 2, 1, -1};
-    int vSalida[MAXENTRADA];
-    int x = 5, y = 6;
-    int retardo = 0, objetivo = 4;
-
-    tpTablero tablero;
-
-    tablero.ncols = x;
-    tablero.nfils = y;
+    int retardo, objetivo;
+    
+    escribirParametros(vEntrada, tablero.ncols, tablero.nfils, retardo, objetivo, argc, argv);
 
     inicializarTablero(tablero);
 
-    //escribirParametros(vEntrada, x, y, retardo, objetivo);        // Por ahora los parametros están fijos para testear mas rapido
 
     int n = buscaSolucion(tablero, vEntrada, vSalida, objetivo, 0, retardo);
 
