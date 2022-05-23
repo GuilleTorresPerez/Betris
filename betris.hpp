@@ -105,23 +105,34 @@ bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int p
 // Post: devuelve true si el objetivo se ha cumplido, es decir que hay un n numero de filas relleno empezando desde abajo
 bool comprobarCondicion(const tpTablero &tp, const int n);
 
-// TODO: ESPECIFICAR CONDICION Y SALIDA
+// Pre: tp contiene el estado actual del tablero
+// Post: Comprueba si la pieza "pieza" se encuentra en una posición correcta en el tablero "tp"
 bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posicion[]);
 
-// TODO: ESPECIFICAR CONDICION Y SALIDA
+// Pre: tp contiene el estado actual del tablero.
+// Post: Busca una fila en tpTablero para la pieza nPieza
 bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int columna);
 
-// TODO: ESPECIFICAR CONDICION Y SALIDA
+// Pre: argc contiene el número de elementos de la entrada estándar y argv el contenido de esos elementos 
+// Post: escribe los valores de la entrada estándar en las variables
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo, int argc, char* argv[]);
 
-/*
- * Pre:  ---
- * Post: Borra la parte visible del terminal y mueve el cursor a la primera
- *       fila y la primera columna, de forma que la siguiente instrucción de 
- *       escritura en pantalla escriba desde el inicio de la parte visible del
- *       terminal.
- */
+
+ //Pre:  ---
+ //Post: Borra la parte visible del terminal y mueve el cursor a la primera
+ //       fila y la primera columna, de forma que la siguiente instrucción de 
+ //      escritura en pantalla escriba desde el inicio de la parte visible del
+ //      terminal.
 void borrarPantalla();
+
+//Pre: ---
+//Post: Sube el cursor de escritura del terminal «lineas» líneas, sin borrar
+//      el contenido que ya esté escrito en el terminal.
+void subirCursor(const unsigned lineas);
+
+//Pre: ---
+//Post: muestra por consola el color indicado por el parámetro código de color
+void mostrarCasilla(const int codigoDeColor);
 
 
 //////////////////////////////////////////////////////////////////////////////
