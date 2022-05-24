@@ -26,6 +26,7 @@ const int CIAN     = 46;
 const int BLANCO   = 47;
 const int VACIO    = -1;
 
+// Array para cambiar el indice de una pieza por su color
 const int piezaAColor[PIEZASDEF]={AZUL, VERDE, ROJO, CIAN, AMARILLO};
 
 const int TIEMPO   = 250000;
@@ -78,7 +79,7 @@ const int tamPiezas[PIEZASDEF][2] = {
 
 // FUNCIONES
 
-// Pre: true
+// Pre: ---
 // Post: Todas las componentes de tablero.matriz son -1 (casilla vacía)
 void inicializarTablero(tpTablero &tablero);
 
@@ -96,33 +97,34 @@ void mostrarTablero(const tpTablero & tablero, const int vEntrada[MAXENTRADA]);
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo = 0);
 
 // Pre: tp es un tablero con un determinado valor de piezas colocadas, pieza es la nueva pieza que se quiere colocar,
-//      posicion es un array con las coordenadas de la pieza que se quiere colocar, (arriba a la derecha)
-// Post: Devuelve true si el nuevo tablero no se solapa y false y hay dos o más piezas que se solapan en el nuevo tablero
-//       Actualiza tp con los nuevos valores de las piezas, incluso si se solapan
-bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[], int vSalida[], const bool insertar);
+//      posicion es un array con las coordenadas de la pieza que se quiere colocar, (arriba a la derecha).
+//      insertar define si se coloca la dicha pieza en posicion o si se cambia todos los valores de una pieza ya colocada por -1
+// Post: Actualiza vSalida con la nueva pieza si se ha colocado, o cambia su valor en el array por -1 si se ha quitado.
+//       Se actualiza el tablero tp con el cambio que se ha especificado por pieza, posicion e insertar
+void insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[], int vSalida[], const bool insertar);
 
 // Pre: tp es un tablero con un determinado valor de piezas colocadas, n es el número de filas necesarias para completar el objetivo
-// Post: devuelve true si el objetivo se ha cumplido, es decir que hay un n numero de filas relleno empezando desde abajo
+// Post: devuelve true si el objetivo se ha cumplido, es decir que hay un n numero de filas relleno en todo el tablero
 bool comprobarCondicion(const tpTablero &tp, const int n);
 
-// Pre: tp contiene el estado actual del tablero
-// Post: Comprueba si la pieza "pieza" se encuentra en una posición correcta en el tablero "tp"
+// Pre: tp contiene el estado actual del tablero, pieza es la pieza que se quiere comprobar si cabe en posicion
+// Post: Devuelve true si la pieza "pieza" se encuentra en una posición correcta en el tablero "tp", devuelve false en caso contrario
 bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posicion[]);
 
-// Pre: tp contiene el estado actual del tablero.
-// Post: Busca una fila en tpTablero para la pieza nPieza
-bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int columna);
+// Pre: tp contiene el estado actual del tablero. nPieza es el indice de la pieza que se quiere colocar
+// Post: Busca una fila en tpTablero para la pieza nPieza, si la encuentra devuelve true y el valor de la esquina superior izquierda donde
+//       cabe la pieza
+bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], const int columna);
 
 // Pre: argc contiene el número de elementos de la entrada estándar y argv el contenido de esos elementos 
 // Post: escribe los valores de la entrada estándar en las variables
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo, int argc, char* argv[]);
 
-
- //Pre:  ---
- //Post: Borra la parte visible del terminal y mueve el cursor a la primera
- //       fila y la primera columna, de forma que la siguiente instrucción de 
- //      escritura en pantalla escriba desde el inicio de la parte visible del
- //      terminal.
+//Pre:  ---
+//Post: Borra la parte visible del terminal y mueve el cursor a la primera
+//       fila y la primera columna, de forma que la siguiente instrucción de 
+//      escritura en pantalla escriba desde el inicio de la parte visible del
+//      terminal.
 void borrarPantalla();
 
 //Pre: ---

@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// Pre: vEntrada, vSalida y n tienen informacion sobre las piezas colocadas y las respectivas columnas donde se han colocado
+// Post: Escribe en pantalla los datos sobre la solucion al problema de colocacion de piezas planteado
 void datosFinales(const int vEntrada[], const int vSalida[], const int n) {
     cout << "Entrada (numero de piezas): ";
     int index = 0;
@@ -16,13 +18,13 @@ void datosFinales(const int vEntrada[], const int vSalida[], const int n) {
 }
 
 
-//el argumento argc (argument counter) de la funci´on main toma como valor el n´umero
-//de cadenas (o secuencias de caracteres) dados por la l´ınea de ´ordenes y separadas por
-//espacios (por defecto), incluyendo tambi´en la cadena relativa al nombre del programa
+// El argumento argc (argument counter) de la funcion main toma como valor el numero
+// de cadenas (o secuencias de caracteres) dados por la linea de ordenes y separadas por
+// espacios (por defecto), incluyendo tambien la cadena relativa al nombre del programa.
 
-//El segundo argumento, argv (argument vector), es una referencia a un vector de cadenas de caracteres. 
-//En cada posici´on de este vector se almacena cada una de las cadenas
-//dadas por la l´ınea de ´ordenes
+// El segundo argumento, argv (argument vector), es una referencia a un vector de cadenas de caracteres. 
+// En cada posicion de este vector se almacena cada una de las cadenas
+// dadas por la linea de ordenes.
 int main(int argc, char* argv[]) {
 
     borrarPantalla();
@@ -36,8 +38,13 @@ int main(int argc, char* argv[]) {
 
     inicializarTablero(tablero);
 
-
+    // Algoritmo de backtracking para encontrar la solucion al problema
     int n = buscaSolucion(tablero, vEntrada, vSalida, objetivo, 0, retardo);
+
+    if (n == -1) {  // Mostrar el tablero vacio si no encuentra solucion
+        inicializarTablero(tablero);
+        mostrarTablero(tablero, vEntrada);
+    }
 
     datosFinales(vEntrada, vSalida, n);
 

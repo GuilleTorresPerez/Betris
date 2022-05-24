@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <cstdlib>
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -35,7 +36,7 @@ void mostrarCasilla(const int codigoDeColor) {
 
 void mostrarTablero(const tpTablero &tablero, const int vEntrada[MAXENTRADA]) {
     subirCursor(tablero.nfils);
-    for(int i = 0; i < tablero.nfils; i++) {                     // Se invierte el tablero para empezar desde abajo
+    for(int i = 0; i < tablero.nfils; i++) { 
         for(int j = 0; j  < tablero.ncols; j++) {
             int indexCasilla = tablero.matriz[i][j];
             if (indexCasilla != -1) {
@@ -49,15 +50,30 @@ void mostrarTablero(const tpTablero &tablero, const int vEntrada[MAXENTRADA]) {
     usleep(TIEMPO);
 }
 
+void piezasAleatorias(int vEntrada[], const int n) {
+
+    srand(time(nullptr));
+
+    for (int i = 0; i < n; i++) {
+        vEntrada[i] = rand() % PIEZASDEF; 
+    }
+}
+
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo,const int argc,char* argv[]) {
     y = stoi(argv[1]);
     x = stoi(argv[2]);
     objetivo = stoi(argv[3]);
     retardo = stoi(argv[4]);
     
-    for (int i = 5; i < argc; i++) {
-        vEntrada[i - 5] = stoi(argv[i]);
+    if (stoi(argv[5]) < 0) {
+        piezasAleatorias(vEntrada, -stoi(argv[5]));
+    } else {
+        for (int i = 5; i < argc; i++) {
+            vEntrada[i - 5] = stoi(argv[i]);
+        }
     }
+
+    
 }
 
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo) {
@@ -119,7 +135,7 @@ bool comprobarCondicion(const tpTablero &tp, const int objetivo) {
 
 }
 
-bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], int columna) {
+bool buscarFila(const tpTablero &tp, const int nPieza, int posicion[], const int columna) {
 
     const int objetivoY = tp.nfils - tamPiezas[nPieza][0] + 1;
 
@@ -158,7 +174,7 @@ bool comprobarPosicion(const tpTablero &tp, const tpPieza &pieza, const int posi
 
 }
 
-bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[], int vSalida[], const bool insertar) {
+void insertarPieza(tpTablero &tp, const int nPieza, const int index, const int posicion[], int vSalida[], const bool insertar) {
     
     tpPieza pieza = vPiezas[nPieza];
 
@@ -175,9 +191,7 @@ bool insertarPieza(tpTablero &tp, const int nPieza, const int index, const int p
 
     if (insertar) {
         vSalida[index] = posicion[1];
-        return true;
     } else {
         vSalida[index] = -1;
-        return false;
     }
 }
