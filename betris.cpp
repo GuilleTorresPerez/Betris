@@ -47,7 +47,6 @@ void mostrarTablero(const tpTablero &tablero, const int vEntrada[MAXENTRADA]) {
         }
         cout << endl;
     }
-    usleep(TIEMPO);
 }
 
 void piezasAleatorias(int vEntrada[], const int n) {
@@ -56,7 +55,7 @@ void piezasAleatorias(int vEntrada[], const int n) {
 
     for (int i = 0; i < n; i++) {
         vEntrada[i] = rand() % PIEZASDEF; 
-    }
+    }    
 }
 
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo,const int argc,char* argv[]) {
@@ -72,8 +71,6 @@ void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objet
             vEntrada[i - 5] = stoi(argv[i]);
         }
     }
-
-    
 }
 
 int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalida[MAXENTRADA], const int objetivo, int n, const int retardo) {
@@ -95,7 +92,8 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
         if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
 
             insertarPieza(tablero, vEntrada[n], n, posicion, vSalida, true);
-            mostrarTablero(tablero, vEntrada);                             
+            mostrarTablero(tablero, vEntrada);   
+            usleep(retardo * 1000);                          
 
             int backTracking =  buscaSolucion(tablero, vEntrada, vSalida, objetivo, n + 1, retardo);
         
