@@ -49,24 +49,21 @@ void mostrarTablero(const tpTablero &tablero, const int vEntrada[MAXENTRADA]) {
     }
 }
 
-void piezasAleatorias(int vEntrada[], const int n) {
-
-    srand(time(nullptr));
-
-    for (int i = 0; i < n; i++) {
-        vEntrada[i] = rand() % PIEZASDEF; 
-    }    
-    vEntrada[n] = -1;
-}
-
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo,const int argc,char* argv[]) {
     y = stoi(argv[1]);
     x = stoi(argv[2]);
     objetivo = stoi(argv[3]);
     retardo = stoi(argv[4]);
     
-    if (stoi(argv[5]) < 0) {
-        piezasAleatorias(vEntrada, -stoi(argv[5]));
+    int n = stoi(argv[5]);
+    if (n < 0) {
+        srand(time(nullptr));
+
+        for (int i = 0; i < n; i++) {
+            vEntrada[i] = rand() % PIEZASDEF; 
+        }    
+
+        vEntrada[n] = -1;
     } else {
         for (int i = 5; i < argc; i++) {
             vEntrada[i - 5] = stoi(argv[i]);
