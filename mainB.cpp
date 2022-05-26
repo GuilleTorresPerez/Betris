@@ -44,6 +44,8 @@ int main(int argc, char* argv[]) {
     if (n == -1) {  // Mostrar el tablero vacio si no encuentra solucion
         inicializarTablero(tablero);
         mostrarTablero(tablero, vEntrada);
+    } else if(retardo < 0) {
+        mostrarTablero(tablero, vEntrada);
     }
 
     datosFinales(vEntrada, vSalida, n);

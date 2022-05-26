@@ -92,8 +92,11 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
         if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
 
             insertarPieza(tablero, vEntrada[n], n, posicion, vSalida, true);
-            mostrarTablero(tablero, vEntrada);   
-            usleep(retardo * 1000);                          
+            if (retardo >= 0) {
+                mostrarTablero(tablero, vEntrada);
+                usleep(retardo * 1000); 
+            }
+                                     
 
             int backTracking =  buscaSolucion(tablero, vEntrada, vSalida, objetivo, n + 1, retardo);
         
