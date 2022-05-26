@@ -56,6 +56,7 @@ void piezasAleatorias(int vEntrada[], const int n) {
     for (int i = 0; i < n; i++) {
         vEntrada[i] = rand() % PIEZASDEF; 
     }    
+    vEntrada[n] = -1;
 }
 
 void escribirParametros(int vEntrada[], int &x, int &y, int &retardo, int &objetivo,const int argc,char* argv[]) {
@@ -94,7 +95,7 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
             insertarPieza(tablero, vEntrada[n], n, posicion, vSalida, true);
             if (retardo >= 0) {
                 mostrarTablero(tablero, vEntrada);
-                usleep(retardo * 1000); 
+                //usleep(retardo * 1000); 
             }
                                      
 

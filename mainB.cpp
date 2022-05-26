@@ -34,6 +34,9 @@ int main(int argc, char* argv[]) {
     tpTablero tablero;
     int retardo, objetivo;
     
+    //int argc = 5;
+    //char argv[argc] = {'6', '5', '4', '0', '0', '0', '1', '2', '3', '0', '-1'};
+
     escribirParametros(vEntrada, tablero.ncols, tablero.nfils, retardo, objetivo, argc, argv);
 
     inicializarTablero(tablero);
