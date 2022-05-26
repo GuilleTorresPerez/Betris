@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <string>
 #include <cstdlib>
+
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -84,16 +85,16 @@ int buscaSolucion(tpTablero &tablero, const int vEntrada[MAXENTRADA], int vSalid
     int i = 0; 
     bool esSolucion = false;
     int backTracking = -1; 
-    while (i < tablero.ncols && !esSolucion) {                                               // Buscamos solución empezando desde la primera columna
+    while (i < tablero.ncols && !esSolucion) {                              // Buscamos solución empezando desde la primera columna
 
         int posicion[2];
         if (buscarFila(tablero, vEntrada[n], posicion, i)) {                //Si con la columna actual se ha encontrado espacio, cuya posición está guardada en el vector posición:
 
             insertarPieza(tablero, vEntrada[n], n, posicion, vSalida, true);
             if (retardo >= 0) {
-                mostrarTablero(tablero, vEntrada);
-                //usleep(retardo * 1000); 
-            }
+                mostrarTablero(tablero, vEntrada);  
+                usleep(retardo * 1000);                                     // Puede que haya problemas al compilar el retardo en windows       
+            }       
                                      
 
             int backTracking =  buscaSolucion(tablero, vEntrada, vSalida, objetivo, n + 1, retardo);
